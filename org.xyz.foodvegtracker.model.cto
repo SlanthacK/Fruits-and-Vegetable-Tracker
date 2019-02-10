@@ -1,0 +1,72 @@
+namespace org.xyz.foodvegtracker
+
+asset F&V identified by batchid{
+  o String name
+  o String batchid
+  o OWNER owner
+  //o TYPE type
+  o STATE state
+  o String expDate
+  o QUALITY quality
+  o FRESSNESS freshness
+}
+
+abstract participant Node identifies by nid{
+  o String name
+  o String nid
+  o ADDRESS address
+}
+
+participant Farmer extends Node{
+  o METHODOFFARMING methodoffarming
+}
+
+participant PrimaryDistributor extends Node{
+}
+
+participant QualityInspector extends Node{
+}
+
+participant SecondaryDistributor extends Node{
+}
+
+participant Retailer extends Node{
+  o TYPEOFRETAIL typeofretail
+}
+
+enum OWNER{
+  o FARMER
+  o PRIMARYDISTRIBUTOR
+  o QUALITYINSPECTOR
+  o SECONDARYDISTRIBUTOR
+  O RETAILER
+}
+
+enum STATE{
+  o HARVESTED
+  o GETTING_INSPECTED
+  o FINAL_INSPECTED
+  o AVAILABLE_FOR_SALE
+}
+
+enum FRESSNESS{
+  o RIPE
+  o READY_TO_EAT
+  o STALE
+}
+
+enum QUALITY{
+  o QualA
+  o QualB
+  o QualC
+}
+
+enum ADDRESS{
+  o String comp_name
+  o String city
+  o String country optional
+  o String locality optional
+  o String region optional
+  o String street optional
+  o String postalCode optional
+}
