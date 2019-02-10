@@ -1,17 +1,17 @@
 namespace org.xyz.foodvegtracker
 
-asset F&V identified by batchid{
+asset FandV identified by batchid{
   o String name
   o String batchid
   o OWNER owner
   //o TYPE type
   o STATE state
-  o String expDate
+  o DateTime expDate default="2019-01-01"
   o QUALITY quality
   o FRESSNESS freshness
 }
 
-abstract participant Node identifies by nid{
+abstract participant Node identified by nid{
   o String name
   o String nid
   o ADDRESS address
@@ -39,7 +39,7 @@ enum OWNER{
   o PRIMARYDISTRIBUTOR
   o QUALITYINSPECTOR
   o SECONDARYDISTRIBUTOR
-  O RETAILER
+  o RETAILER
 }
 
 enum STATE{
@@ -61,7 +61,17 @@ enum QUALITY{
   o QualC
 }
 
-enum ADDRESS{
+enum METHODOFFARMING
+{
+  o Organic
+  o InOrganic 
+}
+enum TYPEOFRETAIL
+{
+  o Commercial
+  o Non_Commercial
+}
+concept ADDRESS{
   o String comp_name
   o String city
   o String country optional
