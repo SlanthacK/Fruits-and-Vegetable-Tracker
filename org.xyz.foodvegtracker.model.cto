@@ -3,12 +3,13 @@ namespace org.xyz.foodvegtracker
 asset FandV identified by batchid{
   o String name
   o String batchid
-  o OWNER owner
+  o OWNER owner default="FARMER"
   //o TYPE type
-  o STATE state
+  o STATE state default="NOT_HARVESTED"
   o DateTime expDate default="2019-01-01"
-  o QUALITY quality
-  o FRESSNESS freshness
+  o QUALITY quality default="NOT_INSPECTED"
+  o FRESSNESS freshness default="RIPE"
+  o Integer quantity
 }
 
 abstract participant Node identified by nid{
@@ -50,6 +51,7 @@ enum OWNER{
 }
 
 enum STATE{
+  o NOT_HARVESTED
   o HARVESTED
   o GETTING_INSPECTED
   o FINAL_INSPECTED
@@ -63,6 +65,7 @@ enum FRESSNESS{
 }
 
 enum QUALITY{
+  o NOT_INSPECTED
   o QualA
   o QualB
   o QualC
