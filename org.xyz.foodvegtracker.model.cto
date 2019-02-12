@@ -5,6 +5,7 @@ asset FandV identified by batchid{
   o String batchid
   o OWNER owner default="FARMER"
   //o TYPE type
+  o REQUEST_STATE req_state default="NA"
   o STATE state default="NOT_HARVESTED"
   o DateTime expDate default="2019-01-01"
   o QUALITY quality default="NOT_INSPECTED"
@@ -34,6 +35,17 @@ participant SecondaryDistributor extends Node{
 
 participant Retailer extends Node{
   o TYPEOFRETAIL typeofretail
+}
+
+enum REQUEST_STATE
+{
+  o NA
+  o Requested_by_pDistributor
+  o approved_by_farmer
+  o Requested_by_sDistributor
+  o approved_by_pDistributor
+  o Requested_by_Retailer
+  o approved_by_sDistributor
 }
 
 enum TYPEOFSELLER
