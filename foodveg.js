@@ -72,3 +72,29 @@ async function req_p_to_f(req)
      .then(function updateRegistry(assetRegistry)
            {return assetRegistry.update(apprv.fandv)});
  }
+ 
+ /**
+  * farmer will send fandv to primary distributor
+  * @param {org.xyz.foodvegtracker.send_farmer_to_pDistributor} send
+  * @transaction 
+  */
+
+  async function send_to_primarydistributor(send)
+  {
+      if(send.fandv.req_state=='approved_by_farmer' && send.fandv.owner=='FARMER')
+      {
+          send.fandv.owner='PRIMARYDISTRIBUTOR';
+          send.fandv.req_state='NA';
+      }
+      else if (send.fandv.req_state!='approved_by_farmer')
+      {
+          throw new window.alert("it not approved by the farmer");
+      }
+      else if (send.fandv.owner!='FARMER')
+      {
+        throw new window.alert("owner is not a farmer");
+      }
+      return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+      .then(function updateRegistry(assetRegistry)
+            {return assetRegistry.update(send.fandv)});
+  }
