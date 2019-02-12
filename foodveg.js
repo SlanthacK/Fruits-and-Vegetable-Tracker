@@ -216,7 +216,7 @@ async function req_p_to_f(req)
 
    async function send_rej_to_farmer(send)
    {
-       if(send.fandv.quality=='Rejected' && send.fandv.owner=='PRIMARYDISTRIBUTOR')
+    if(send.fandv.quality=='Rejected' && send.fandv.owner=='PRIMARYDISTRIBUTOR')
        {
         send.fandv.owner=='FARMER';
        }
