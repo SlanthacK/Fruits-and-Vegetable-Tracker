@@ -7,7 +7,7 @@ asset FandV identified by batchid{
   //o TYPE type
   o REQUEST_STATE req_state default="NA"
   o STATE state default="NOT_HARVESTED"
-  o DateTime expDate default="2019-01-01"
+  o DateTime expDate default="2000-01-01"
   o QUALITY quality default="NOT_INSPECTED"
   o FRESSNESS freshness default="RIPE"
   o Integer quantity
@@ -66,7 +66,7 @@ enum STATE{
   o NOT_HARVESTED
   o HARVESTED
   o GETTING_INSPECTED
-  o FINAL_INSPECTED
+  o INSPECTED
   o AVAILABLE_FOR_SALE
 }
 
@@ -81,6 +81,7 @@ enum QUALITY{
   o QualA
   o QualB
   o QualC
+  o Rejected
 }
 
 enum METHODOFFARMING
@@ -107,6 +108,7 @@ transaction farmed
 {
   --> Farmer farmer
   --> FandV fandv
+  o DateTime exp
 }
 
 transaction req_pDistributor_to_farmer
@@ -134,6 +136,9 @@ transaction send_pDistributor_to_qualityInspection
 transaction Inspected {
   --> FandV fandv
   --> QualityInspector Quality_Inspector
+  o Integer no_to_reject
+  o QUALITY qual
+  o FRESSNESS fresh
 }
 
 transaction send_qualityInspection_to_pDistributor 
@@ -141,6 +146,13 @@ transaction send_qualityInspection_to_pDistributor
   --> PrimaryDistributor pDistributor
   --> FandV fandv
   --> QualityInspector Quality_Inspector
+}
+
+transaction send_rejected_pDistributor_to_farmer 
+{
+  --> PrimaryDistributor pDistributor  
+  --> FandV fandv
+  --> Farmer farmer
 }
 transaction req_sDistributor_to_pDistributor
 {
