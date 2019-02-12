@@ -6,7 +6,14 @@
 
  async function farming_done(farm)
  {
-    farm.fandv.state = 'HARVESTED';
+    if(farm.fandv.state=='NOT_HARVESTED' && farm.fandv.owner=='FARMER')
+    {
+        farm.fandv.state = 'HARVESTED';
+    }
+    else
+    {
+        throw new window.alert("it is already harvested");   
+    }
     return getAssetRegistry('org.xyz.foodvegtracker.FandV')
     .then(function updateRegistry(assetRegistry)
           {return assetRegistry.update(farm.fandv)});
