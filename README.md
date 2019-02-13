@@ -1,2 +1,2 @@
 # Fruits-and-Vegetable-Tracker
-It tracks fruits and vegetables from farmers till it reachs your doorstep.
+It keeps track of your fruits and vegetables produced at a farm till it reaches your doorstep!
