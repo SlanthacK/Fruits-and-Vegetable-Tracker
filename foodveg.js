@@ -218,7 +218,7 @@ async function req_p_to_f(req)
    {
     if(send.fandv.quality=='Rejected' && send.fandv.owner=='PRIMARYDISTRIBUTOR')
        {
-        send.fandv.owner=='FARMER';
+        send.fandv.owner='FARMER';
        }
        else if(send.fandv.quality!='Rejected')
        {
@@ -233,3 +233,52 @@ async function req_p_to_f(req)
              {return assetRegistry.update(send.fandv)});
    }
 
+  /**
+   * request for rejected fandv to use it as manure
+   * @param  {org.xyz.foodvegtracker.req_farmer_to_pDistributor} req
+   * @transaction
+   */
+
+  async function req_farmer_to_pdistributor(req)
+  {
+   if(req.fandv.quality=='Rejected' && req.fandv.owner=='PRIMARYDISTRIBUTOR')
+      {
+       req.fandv.req_state='requested_by_farmer';
+      }
+      else if(req.fandv.quality!='Rejected')
+      {
+       throw new window.alert("fandv is not rejected");
+      }
+      else
+      {
+          throw new window.alert("unknown error");
+      }
+      return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+      .then(function updateRegistry(assetRegistry)
+            {return assetRegistry.update(req.fandv)});
+  }
+
+    /**
+   * request for rejected fandv to use it as manure
+   * @param  {org.xyz.foodvegtracker.apprv_req_farmer_to_pDistributor} apprv
+   * @transaction
+   */
+
+  async function req_farmer_to_pdistributor(apprv)
+  {
+   if(apprv.fandv.quality=='Rejected' && apprv.fandv.owner=='PRIMARYDISTRIBUTOR')
+      {
+       apprv.fandv.req_state='approved_by_pDistributor';
+      }
+      else if(apprv.fandv.quality!='Rejected')
+      {
+       throw new window.alert("fandv is not rejected");
+      }
+      else
+      {
+          throw new window.alert("unknown error");
+      }
+      return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+      .then(function updateRegistry(assetRegistry)
+            {return assetRegistry.update(apprv.fandv)});
+  }
