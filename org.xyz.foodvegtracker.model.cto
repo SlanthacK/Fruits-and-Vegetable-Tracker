@@ -47,7 +47,7 @@ enum REQUEST_STATE
   o Requested_by_Retailer
   o approved_by_sDistributor
   o requested_by_farmer
-  o requested_by_pDistributor
+  o approved_by_pDistributor_for_rejected
 }
 
 enum TYPEOFSELLER

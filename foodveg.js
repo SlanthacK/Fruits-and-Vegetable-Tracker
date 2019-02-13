@@ -216,7 +216,7 @@ async function req_p_to_f(req)
 
    async function send_rej_to_farmer(send)
    {
-    if(send.fandv.quality=='Rejected' && send.fandv.owner=='PRIMARYDISTRIBUTOR')
+    if(send.fandv.quality=='Rejected' && send.fandv.owner=='PRIMARYDISTRIBUTOR' && send.fandv.req_state=='approved_by_pDistributor_rejected')
        {
         send.fandv.owner='FARMER';
        }
@@ -259,16 +259,16 @@ async function req_p_to_f(req)
   }
 
     /**
-   * request for rejected fandv to use it as manure
+   * apprv for rejected fandv to use it as manure
    * @param  {org.xyz.foodvegtracker.apprv_req_farmer_to_pDistributor} apprv
    * @transaction
    */
 
-  async function req_farmer_to_pdistributor(apprv)
+  async function apprv_req_farmer_to_pdistributor(apprv)
   {
    if(apprv.fandv.quality=='Rejected' && apprv.fandv.owner=='PRIMARYDISTRIBUTOR')
       {
-       apprv.fandv.req_state='approved_by_pDistributor';
+       apprv.fandv.req_state='approved_by_pDistributor_for_rejected';
       }
       else if(apprv.fandv.quality!='Rejected')
       {
