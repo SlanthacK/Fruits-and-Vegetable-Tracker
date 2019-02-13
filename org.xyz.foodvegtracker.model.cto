@@ -89,7 +89,7 @@ enum QUALITY{
 enum METHODOFFARMING
 {
   o Organic
-  o InOrganic 
+  o InOrganic
 }
 enum TYPEOFRETAIL
 {
@@ -111,6 +111,7 @@ transaction farmed
   --> Farmer farmer
   --> FandV fandv
   o DateTime exp
+  o Integer quantity
 }
 
 transaction req_pDistributor_to_farmer
@@ -128,7 +129,7 @@ transaction send_farmer_to_pDistributor extends req_pDistributor_to_farmer
 {
 
 }
-transaction send_pDistributor_to_qualityInspection 
+transaction send_pDistributor_to_qualityInspection
 {
   --> PrimaryDistributor pDistributor
   --> FandV fandv
@@ -143,22 +144,22 @@ transaction Inspected {
   o FRESSNESS fresh
 }
 
-transaction send_qualityInspection_to_pDistributor 
+transaction send_qualityInspection_to_pDistributor
 {
   --> PrimaryDistributor pDistributor
   --> FandV fandv
   --> QualityInspector Quality_Inspector
 }
 
-transaction req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{  
+transaction req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{
 }
 
-transaction apprv_req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{  
+transaction apprv_req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{
 }
 
-transaction send_rejected_pDistributor_to_farmer 
+transaction send_rejected_pDistributor_to_farmer
 {
-  --> PrimaryDistributor pDistributor  
+  --> PrimaryDistributor pDistributor
   --> FandV fandv
   --> Farmer farmer
 }
@@ -167,6 +168,7 @@ transaction req_sDistributor_to_pDistributor
   --> PrimaryDistributor pDistributor
   --> FandV fandv
   --> SecondaryDistributor sDistributor
+  o QUALITY qual
 }
 transaction apprv_req_sDistributor_to_pDistributor extends req_sDistributor_to_pDistributor
 {
@@ -181,6 +183,7 @@ transaction req_retail_to_sDistributor
   --> FandV fandv
   --> SecondaryDistributor sDistributor
   --> Retailer retailer
+  o QUALITY qual
 }
 transaction apprv_req_retail_to_sDistributor extends req_retail_to_sDistributor
 {

@@ -10,10 +10,11 @@
     {
         farm.fandv.state = 'HARVESTED';
         farm.fandv.expDate = farm.exp;
+        farm.fandv.quantity = farm.quantity;
     }
     else
     {
-        throw new window.alert("it is already harvested");   
+        throw new window.alert("it is already harvested");
     }
     return getAssetRegistry('org.xyz.foodvegtracker.FandV')
     .then(function updateRegistry(assetRegistry)
@@ -39,7 +40,7 @@ async function req_p_to_f(req)
     else if (req.fandv.req_state=='approved_by_farmer')
     {
         throw new window.alert("it has been already requested");
-    }    
+    }
     else if (req.fandv.state=='NOT_HARVESTED')
     {
         throw new window.alert("it is not harvested");
@@ -81,11 +82,11 @@ async function req_p_to_f(req)
      .then(function updateRegistry(assetRegistry)
            {return assetRegistry.update(apprv.fandv)});
  }
- 
+
  /**
   * farmer will send fandv to primary distributor
   * @param {org.xyz.foodvegtracker.send_farmer_to_pDistributor} send
-  * @transaction 
+  * @transaction
   */
 
   async function send_to_primarydistributor(send)
@@ -163,7 +164,7 @@ async function req_p_to_f(req)
          }
          else
          {
-            throw new window.alert("no rejection is more than quantity"); 
+            throw new window.alert("no rejection is more than quantity");
          }
      }
      else
@@ -282,3 +283,174 @@ async function req_p_to_f(req)
       .then(function updateRegistry(assetRegistry)
             {return assetRegistry.update(apprv.fandv)});
   }
+
+  /**
+ * sDistributor requesting fandv from pDistributor
+ * @param  {org.xyz.foodvegtracker.req_sDistributor_to_pDistributor} req
+ * @transaction
+ */
+
+ async function req_sDistributor_to_pDistributor(req)
+ {
+   if(req.fandv.state == 'INSPECTED' && req.fandv.quality != 'Rejected' && req.fandv.owner == 'PRIMARYDISTRIBUTOR' && req.fandv.quality == req.qual)
+   {
+     req.fandv.req_state = 'Requested_by_sDistributor';
+   }
+   else if(req.fandv.state != 'INSPECTED')
+   {
+     throw new window.alert("fandv is not yet inspected");
+   }
+   else if(req.fandv.quality == 'Rejected')
+   {
+     throw new window.alert("Quality of fandv is not up to the mark");
+   }
+   else if(req.fandv.owner != 'PRIMARYDISTRIBUTOR')
+   {
+     throw new window.alert("Owner is not primary distributor");
+   }
+   else if(req.fandv.quality != req.qual)
+   {
+     throw new window.alert("The batch does not contain the requested quality")
+   }
+   else
+   {
+     throw new window.alert("unknown error");
+   }
+   return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+   .then(function updateRegistry(assetRegistry)
+      {return assetRegistry.update(req.fandv)});
+ }
+
+ /**
+* sDistributor requesting fandv from pDistributor
+* @param  {org.xyz.foodvegtracker.apprv_req_sDistributor_to_pDistributor} req
+* @transaction
+*/
+
+async function apprv_req_sDistributor_to_pDistributor(req)
+{
+  if(req.fandv.req_state == 'Requested_by_sDistributor')
+  {
+    req.fandv.req_state = 'approved_by_pDistributor';
+  }
+  else if(req.fandv.state != 'Requested_by_sDistributor')
+  {
+    throw new window.alert("It is not requested by sDistributor");
+  }
+  else
+  {
+    throw new window.alert("unknown error");
+  }
+  return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+  .then(function updateRegistry(assetRegistry)
+     {return assetRegistry.update(req.fandv)});
+}
+
+
+/**
+* sDistributor requesting fandv from pDistributor
+* @param  {org.xyz.foodvegtracker.send_pDistributor_to_sDistributor} req
+* @transaction
+*/
+
+async function send_pDistributor_to_sDistributor(req)
+{
+ if(req.fandv.req_state == 'approved_by_pDistributor')
+ {
+   req.fandv.req_state = 'NA';
+   req.fandv.owner = 'SECONDARYDISTRIBUTOR';
+ }
+ else if(req.fandv.state != 'approved_by_pDistributor')
+ {
+   throw new window.alert("It is not approved by pDistributor");
+ }
+ else
+ {
+   throw new window.alert("unknown error");
+ }
+ return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+ .then(function updateRegistry(assetRegistry)
+    {return assetRegistry.update(req.fandv)});
+}
+
+/**
+* sDistributor requesting fandv from pDistributor
+* @param  {org.xyz.foodvegtracker.req_retail_to_sDistributor} req
+* @transaction
+*/
+
+async function req_retail_to_sDistributor(req)
+{
+ if(req.fandv.owner == 'SECONDARYDISTRIBUTOR' && req.fandv.quality == req.qual)
+ {
+   req.fandv.req_state = 'Requested_by_Retailer';
+ }
+ else if(req.fandv.owner != 'SECONDARYDISTRIBUTOR')
+ {
+   throw new window.alert("Owner is not secondary distributor");
+ }
+ else if(req.fandv.quality != req.qual)
+ {
+   throw new window.alert("The batch does not contain the requested quality")
+ }
+ else
+ {
+   throw new window.alert("unknown error");
+ }
+ return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+ .then(function updateRegistry(assetRegistry)
+    {return assetRegistry.update(req.fandv)});
+}
+
+
+/**
+* sDistributor requesting fandv from pDistributor
+* @param  {org.xyz.foodvegtracker.apprv_req_retail_to_sDistributor} req
+* @transaction
+*/
+
+async function apprv_req_retail_to_sDistributor(req)
+{
+ if(req.fandv.req_state == 'Requested_by_Retailer')
+ {
+   req.fandv.req_state = 'approved_by_sDistributor';
+ }
+ else if(req.fandv.req_state != 'Requested_by_Retailer')
+ {
+   throw new window.alert("It is not requested by Retailer");
+ }
+ else
+ {
+   throw new window.alert("unknown error");
+ }
+ return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+ .then(function updateRegistry(assetRegistry)
+    {return assetRegistry.update(req.fandv)});
+}
+
+
+/**
+* sDistributor requesting fandv from pDistributor
+* @param  {org.xyz.foodvegtracker.send_sDistributor_to_retailer} req
+* @transaction
+*/
+
+async function send_sDistributor_to_retailer(req)
+{
+ if(req.fandv.req_state == 'approved_by_sDistributor')
+ {
+   req.fandv.req_state = 'NA';
+   req.fandv.owner = 'RETAILER';
+ }
+ else if(req.fandv.req_state != 'approved_by_sDistributor')
+ {
+   throw new window.alert("It is not approved by sDistributor");
+ }
+ else
+ {
+   throw new window.alert("unknown error");
+ }
+ return getAssetRegistry('org.xyz.foodvegtracker.FandV')
+ .then(function updateRegistry(assetRegistry)
+    {return assetRegistry.update(req.fandv)});
+}
