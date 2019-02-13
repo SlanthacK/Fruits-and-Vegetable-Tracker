@@ -46,6 +46,8 @@ enum REQUEST_STATE
   o approved_by_pDistributor
   o Requested_by_Retailer
   o approved_by_sDistributor
+  o requested_by_farmer
+  o requested_by_pDistributor
 }
 
 enum TYPEOFSELLER
@@ -146,6 +148,12 @@ transaction send_qualityInspection_to_pDistributor
   --> PrimaryDistributor pDistributor
   --> FandV fandv
   --> QualityInspector Quality_Inspector
+}
+
+transaction req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{  
+}
+
+transaction apprv_req_farmer_to_pDistributor extends send_qualityInspection_to_pDistributor{  
 }
 
 transaction send_rejected_pDistributor_to_farmer 
